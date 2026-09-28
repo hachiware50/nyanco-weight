@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>使い方とBMIの見方｜にゃんこ体重管理室</title>
+<meta name="description" content="体重管理アプリ「にゃんこ体重管理室」の使い方、BMIと標準体重の計算方法、記録を続けるコツ、よくある質問をまとめました。">
+<style>
+:root{--bg:#F5F0E1;--card:#FFFCF5;--ink:#45362B;--muted:#8C7A66;--line:#E7DAC3;--accent:#D9822B;--accent-soft:#F6E3C8;--good:#5F8F5A;--bad:#C4503C;--gold:#D9A441;--radius:18px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",system-ui,sans-serif;line-height:1.9;font-size:16px;background-image:radial-gradient(circle at 20% 10%,#fffdf7 0%,rgba(255,253,247,0) 55%)}
+.wrap{max-width:760px;margin:0 auto;padding:24px 18px 64px}
+header.site{display:flex;align-items:center;gap:12px;padding:14px 0 12px;border-bottom:2px dashed var(--line);margin-bottom:22px}
+.site-mark{width:46px;height:46px;border-radius:14px;background:var(--accent-soft);display:grid;place-items:center;font-size:22px;border:1px solid var(--line);flex:0 0 auto}
+.site-name{font-weight:700;font-size:17px}
+.site-sub{font-size:12px;color:var(--muted)}
+nav.links{margin:0 0 26px;display:flex;flex-wrap:wrap;gap:8px}
+nav.links a{font-size:13px;color:var(--ink);text-decoration:none;background:var(--card);border:1px solid var(--line);padding:6px 13px;border-radius:999px}
+nav.links a:hover{border-color:var(--accent);color:var(--accent)}
+nav.links a[aria-current]{background:var(--accent-soft);border-color:var(--accent)}
+h1{font-size:24px;margin:0 0 6px}
+h2{font-size:18px;margin:34px 0 10px;padding-left:12px;border-left:5px solid var(--accent);line-height:1.5}
+h3{font-size:16px;margin:22px 0 6px}
+p,li{font-size:15px;color:#584838}
+ul,ol{padding-left:1.3em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin:16px 0}
+.lead{font-size:14.5px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);font-weight:700}
+.note{background:var(--accent-soft);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:14px;margin:16px 0}
+.formula{background:var(--card);border:1px dashed var(--accent);border-radius:12px;padding:12px 16px;margin:12px 0;font-size:15px;text-align:center}
+.faq{margin:14px 0}
+.faq dt{font-weight:700;font-size:15px;margin-top:16px}
+.faq dd{margin:6px 0 0;font-size:14.5px;color:#584838}
+.step{display:flex;gap:12px;margin:14px 0}
+.step-n{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+.step-b{flex:1}
+a{color:var(--accent)}
+footer.site{margin-top:48px;padding-top:18px;border-top:2px dashed var(--line);font-size:12.5px;color:var(--muted);text-align:center;line-height:2}
+footer.site a{color:var(--muted);margin:0 6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="site">
+  <div class="site-mark">🐾</div>
+  <div>
+    <div class="site-name">にゃんこ体重管理室</div>
+    <div class="site-sub">茶虎猫の役所 / 体重ノート</div>
+  </div>
+</header>
+<nav class="links">
+  <a href="./index.html">アプリ</a>
+  <a href="./guide.html" aria-current="page">使い方・BMIの見方</a>
+  <a href="./about.html">運営者情報</a>
+  <a href="./privacy-policy.html">プライバシーポリシー</a>
+</nav>
+
+<h1>使い方と BMI の見方</h1>
+<p class="lead">はじめての方へ、アプリの使い方と、表示される数字の意味をまとめました。</p>
+
+<h2>アプリの使い方</h2>
+
+<div class="step">
+  <div class="step-n">1</div>
+  <div class="step-b">
+    <strong>身長を入力する</strong>
+    <p>まず身長（cm）を入力します。BMI と標準体重の計算に使います。一度入力すれば、次回以降は自動で読み込まれます。</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-n">2</div>
+  <div class="step-b">
+    <strong>体重を記録する</strong>
+    <p>日付と体重（kg）を入れて「記録する」を押します。同じ日付で記録し直すと、その日の値が上書きされます。</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-n">3</div>
+  <div class="step-b">
+    <strong>目標体重を決める</strong>
+    <p>目標体重（kg）を入れると、グラフに緑の点線が表示されます。いまの位置と目標までの距離が一目でわかります。</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-n">4</div>
+  <div class="step-b">
+    <strong>所長の反応を見る</strong>
+    <p>記録すると、茶虎猫の所長が結果に応じて声をかけてくれます。猫をクリック（またはキーボードの Enter）すると、もう一度しゃべります。</p>
+  </div>
+</div>
+
+<div class="note">
+  入力したデータは、お使いのブラウザの中だけに保存されます。会員登録は不要で、外部へ送信されることはありません。詳しくは<a href="./privacy-policy.html">プライバシーポリシー</a>をご覧ください。
+</div>
+
+<h2>BMI とは</h2>
+<p>BMI（Body Mass Index）は、身長と体重のバランスから、体格の目安を求める国際的に使われている指標です。次の式で計算します。</p>
+
+<div class="formula">
+  <strong>BMI ＝ 体重（kg）÷ 身長（m）÷ 身長（m）</strong>
+</div>
+
+<p>たとえば身長160cm・体重60kgの場合は、次のようになります。</p>
+<ul>
+  <li>身長をメートルに直す：160cm → <strong>1.6m</strong></li>
+  <li>1.6 × 1.6 ＝ <strong>2.56</strong></li>
+  <li>60 ÷ 2.56 ≒ <strong>23.4</strong></li>
+</ul>
+<p>この場合の BMI は約 23.4 です。</p>
+
+<h2>BMI の目安</h2>
+<p>日本肥満学会が示している、成人の肥満度分類の目安は次のとおりです。</p>
+
+<table>
+  <tr><th>BMI の範囲</th><th>判定の目安</th></tr>
+  <tr><td>18.5 未満</td><td>やせ型</td></tr>
+  <tr><td>18.5 〜 25 未満</td><td>普通体重</td></tr>
+  <tr><td>25 〜 30 未満</td><td>肥満（1度）</td></tr>
+  <tr><td>30 〜 35 未満</td><td>肥満（2度）</td></tr>
+  <tr><td>35 〜 40 未満</td><td>肥満（3度）</td></tr>
+  <tr><td>40 以上</td><td>肥満（4度）</td></tr>
+</table>
+
+<p>このアプリでは、記録した体重から計算した BMI を画面に表示します。判定はあくまで目安であり、筋肉量や体脂肪率、年齢などによって実際の体の状態は変わります。</p>
+
+<h2>標準体重とは</h2>
+<p>標準体重は、統計的にもっとも病気になりにくいとされる体重で、次の式で求めます。</p>
+
+<div class="formula">
+  <strong>標準体重（kg）＝ 22 × 身長（m）× 身長（m）</strong>
+</div>
+
+<p>この 22 という数字は、BMI が 22 のときに統計上もっとも健康リスクが低いとされることから来ています。身長160cmの場合、1.6 × 1.6 × 22 ＝ 約 56.3kg が標準体重です。</p>
+
+<div class="note">
+  <strong>大切なこと</strong><br>
+  BMI も標準体重も、集団の統計から作られた<strong>目安の数値</strong>です。筋肉質な方は BMI が高めに出ますし、高齢の方では少し高めのほうがよいとされる場合もあります。数字だけを目標にせず、体調を最優先にしてください。
+</div>
+
+<h2>記録を続けるコツ</h2>
+<p>体重の記録でもっとも難しいのは、始めることではなく、続けることです。次のような点を意識すると続きやすくなります。</p>
+
+<h3>1. 毎日同じ条件ではかる</h3>
+<p>体重は、朝と夜、食事前と後で 1kg 以上変わることは珍しくありません。毎日同じ時間帯・同じ条件（起床後トイレに行ったあと、など）ではかると、数字のぶれが小さくなり、変化を読み取りやすくなります。</p>
+
+<h3>2. 1日の数字ではなく、1週間の傾向を見る</h3>
+<p>体重は水分の影響を強く受け、1日単位では大きく動きます。昨日より増えたからといって、脂肪が増えたわけではありません。7日平均などの「ならした値」で見ると、実際の傾向がつかめます。</p>
+
+<h3>3. 増えた日を責めない</h3>
+<p>記録が途切れたり数字が増えたりしても、そこでやめてしまうのが一番もったいないことです。1日空いても、記録そのものは続けられます。このアプリの所長も、増えた日は渋い顔をしますが、それでも記録を続けることを勧めます。</p>
+
+<h3>4. 極端な減量をしない</h3>
+<p>短期間に大きく体重を落とすと、筋肉が減り、体調を崩しやすくなります。一般的には、1か月あたり体重の 5% 以内（体重60kgの方なら月3kg以内）程度のゆるやかな変化が無理のない目安とされています。健康上の判断は、必ず医師などの専門家にご相談ください。</p>
+
+<h2>よくある質問</h2>
+<dl class="faq">
+  <dt>Q. 記録したデータはどこに保存されますか？</dt>
+  <dd>A. お使いの端末のブラウザ内（localStorage）にのみ保存されます。当サイトのサーバーには送信されません。</dd>
+
+  <dt>Q. 機種変更したらデータは引き継げますか？</dt>
+  <dd>A. ブラウザ内に保存する仕組みのため、自動では引き継がれません。大切な記録は、あらかじめメモなどに控えておいてください。</dd>
+
+  <dt>Q. 記録を消したい場合は？</dt>
+  <dd>A. アプリ内の削除ボタンから、記録を1件ずつ消せます。すべて消したい場合は、ブラウザの設定からこのサイトのデータを削除してください。</dd>
+
+  <dt>Q. スマホでも使えますか？</dt>
+  <dd>A. ブラウザで開けば、スマホでもパソコンでも同じように使えます。パソコンでは、ブラウザのメニューから「インストール」すると、アプリのように単体のウィンドウで起動できます。</dd>
+
+  <dt>Q. オフラインでも動きますか？</dt>
+  <dd>A. 一度開いたあとは、通信していない状態でも起動できます。</dd>
+
+  <dt>Q. 医療関係のアドバイスはもらえますか？</dt>
+  <dd>A. いいえ。当アプリは一般的な健康管理を補助するツールであり、診断や治療を目的としたものではありません。健康に関するご判断は、医師や管理栄養士などの専門家にご相談ください。</dd>
+</dl>
+
+<h2>さっそく記録してみる</h2>
+<p>準備は不要です。下のリンクからアプリを開き、身長と体重を入れるだけで始められます。</p>
+<div class="card" style="text-align:center">
+  <p style="margin:0 0 6px;font-size:20px">🐈</p>
+  <p style="margin:0 0 14px;font-size:14px;color:var(--muted)">所長「まあ座れ。今日の体重を聞かせてくれ」</p>
+  <p style="margin:0"><a href="./index.html">アプリを開く →</a></p>
+</div>
+
+<footer class="site">
+  <div>にゃんこ体重管理室</div>
+  <div>
+    <a href="./index.html">アプリ</a>│
+    <a href="./guide.html">使い方</a>│
+    <a href="./about.html">運営者情報</a>│
+    <a href="./privacy-policy.html">プライバシーポリシー</a>
+  </div>
+</footer>
+</div>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

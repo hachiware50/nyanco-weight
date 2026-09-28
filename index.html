@@ -275,6 +275,9 @@ window.addEventListener('appinstalled', function(){
     .row{grid-template-columns:78px 1fr 64px 70px 44px;font-size:13.5px}
   }
 
+  .sitelinks{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:26px 0 12px}
+  .sitelinks a{font-size:12.5px;color:var(--ink);text-decoration:none;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px}
+  .sitelinks a:hover{border-color:var(--accent);color:var(--accent)}
   footer{margin-top:26px;text-align:center;font-size:11.5px;color:var(--muted);font-weight:600}
 
   @media (prefers-reduced-motion:reduce){
@@ -430,6 +433,11 @@ window.addEventListener('appinstalled', function(){
   </section>
 
 
+  <nav class="sitelinks">
+    <a href="./guide.html">使い方・BMIの見方</a>
+    <a href="./about.html">運営者情報</a>
+    <a href="./privacy-policy.html">プライバシーポリシー</a>
+  </nav>
   <footer>にゃんこ体重管理室 ── 記録はこの端末のブラウザに保存されます。機種変更の際は引継ぎされないにゃ。</footer>
 </div>
 

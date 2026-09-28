@@ -1,0 +1,31 @@
+{
+  "name": "にゃんこ体重管理室",
+  "short_name": "にゃんこ体重",
+  "description": "猫の所長が体重管理を手伝う、PCブラウザからインストールできる体重記録アプリ。",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F5F0E1",
+  "theme_color": "#F5F0E1",
+  "categories": [
+    "health",
+    "lifestyle",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

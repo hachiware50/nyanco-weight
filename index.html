@@ -2,6 +2,27 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
+<script>
+window.__nyancoInstallEvent = null;
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  window.__nyancoInstallEvent = e;
+  var b = document.getElementById('installBtn');
+  if(b){ b.disabled = false; b.textContent = 'アプリとしてインストール'; }
+  var h = document.getElementById('installHelp');
+  if(h){ h.textContent = '準備OKにゃ。このボタンからPCにインストールできるにゃ。'; }
+  var m = document.getElementById('installManual');
+  if(m){ m.hidden = true; }
+});
+window.addEventListener('appinstalled', function(){
+  window.__nyancoInstallEvent = null;
+  var b = document.getElementById('installBtn');
+  if(b){ b.disabled = true; b.textContent = 'インストール完了'; }
+  var h = document.getElementById('installHelp');
+  if(h){ h.textContent = 'インストールありがとうにゃ。次からはデスクトップやアプリ一覧から開けるにゃ。'; }
+});
+</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F5F0E1">
 <meta name="description" content="猫の所長があなたの体重を管理する体重記録アプリ。減ったら褒め、増えたら厳しく叱るにゃ。">
@@ -271,6 +292,14 @@
   .pwa-chip{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.06em}
   @media (max-width:700px){.install-body{grid-template-columns:1fr}.install-actions{justify-content:stretch}.install-btn{width:100%}}
 
+
+  .install-manual{margin-top:12px;border:1.5px dashed var(--line);border-radius:12px;padding:12px 14px;background:#fffdf7}
+  .manual-title{margin:0 0 8px;font-size:12.5px;font-weight:900;color:var(--ink)}
+  .manual-list{margin:0 0 0 1.2em;padding:0;font-size:12px;color:var(--muted);font-weight:700;line-height:1.8}
+  .manual-list b{color:var(--ink)}
+  .pwa-diag{margin-top:12px;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;background:#fbf7ee}
+  .diag-title{margin:0 0 6px;font-size:12px;font-weight:900;color:var(--muted)}
+  #diagText{margin:0;white-space:pre-wrap;word-break:break-word;font-size:11.5px;line-height:1.75;color:var(--ink);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 </style>
 </head>
 <body>
@@ -379,13 +408,25 @@
     <div class="install-body">
       <div class="install-copy">
         <strong>ブラウザからアプリとして入れられるにゃ</strong>
-        <p id="installHelp">Chrome / Edge でこのページを開くと、アドレスバー付近の「インストール」からPCに追加できます。</p>
+        <p id="installHelp">確認中にゃ…</p>
       </div>
       <div class="install-actions">
         <button type="button" class="install-btn" id="installBtn" disabled>アプリとしてインストール</button>
       </div>
     </div>
-    <p class="mini-note">※ インストールには HTTPS で公開されたURL、または localhost で開く必要があります。</p>
+    <div class="install-manual" id="installManual" hidden>
+      <p class="manual-title">うまくいかないときは、ブラウザのメニューから入れるにゃ</p>
+      <ol class="manual-list">
+        <li><b>Google Chrome</b>:右上の <b>⋮</b> → 「キャスト、保存、共有」→「<b>…をインストール</b>」/ またはアドレスバー右端のインストールアイコン</li>
+        <li><b>Microsoft Edge</b>:右上の <b>…</b> → 「アプリ」→「<b>このサイトをアプリとしてインストール</b>」</li>
+        <li><b>Firefox / Safari</b>:この機能の対象外にゃ。Chrome か Edge で開いてほしいにゃ</li>
+      </ol>
+    </div>
+    <div class="pwa-diag">
+      <p class="diag-title">動作チェック(この枠の内容をコピーして送ってくれれば原因が特定できるにゃ)</p>
+      <pre id="diagText">確認中…</pre>
+    </div>
+    <p class="mini-note">※ インストールには HTTPS で公開されたURL、または localhost で開く必要があるにゃ。</p>
   </section>
 
 
@@ -411,40 +452,88 @@ let deferredInstallPrompt = null;
 async function setupPWA(){
   const installBtn = $('installBtn');
   const installHelp = $('installHelp');
-  if('serviceWorker' in navigator){
-    try{ await navigator.serviceWorker.register('./sw.js'); }
-    catch(err){ console.warn('[pwa] service worker registration failed', err); }
+  const manual = $('installManual');
+  const diag = $('diagText');
+  const lines = [];
+
+  const ua = navigator.userAgent;
+  const browser = /Edg\//.test(ua) ? 'Edge' : /Chrome\//.test(ua) ? 'Chrome' : /Firefox\//.test(ua) ? 'Firefox' : /Safari\//.test(ua) ? 'Safari' : 'その他';
+  const standalone = !!(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+
+  lines.push('ブラウザ: ' + browser);
+  lines.push('表示モード: ' + (standalone ? 'インストール済み(スタンドアロン)' : 'ブラウザのタブ'));
+  lines.push('プロトコル: ' + location.protocol + (location.protocol === 'https:' || location.hostname === 'localhost' ? ' (OK)' : ' (NG:HTTPSかlocalhostが必要)'));
+
+  try{
+    const res = await fetch('./manifest.webmanifest', {cache:'no-store'});
+    const ct = res.headers.get('content-type') || '不明';
+    lines.push('manifest: HTTP ' + res.status + ' / ' + ct);
+    try{
+      const j = await res.json();
+      lines.push('manifest内容: name=' + (j.name || j.short_name || 'なし') + ' / icons=' + (j.icons ? j.icons.length : 0) + '件 / display=' + (j.display || 'なし'));
+    }catch(pe){
+      lines.push('manifest解析: 失敗(JSONとして読めない) ' + pe.message);
+    }
+  }catch(e){
+    lines.push('manifest: 取得失敗 ' + (e && e.message ? e.message : e));
   }
-  if(!installBtn || !installHelp)return;
-  if(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches){
+
+  if('serviceWorker' in navigator){
+    try{
+      const reg = await navigator.serviceWorker.register('./sw.js');
+      lines.push('Service Worker: 登録受付 scope=' + (reg.scope || '不明'));
+      const ready = await Promise.race([
+        navigator.serviceWorker.ready,
+        new Promise(r => setTimeout(() => r(null), 7000))
+      ]);
+      const ctrl = !!navigator.serviceWorker.controller;
+      lines.push('Service Worker: ' + (ready ? 'Activated(有効)' : '7秒待っても有効化せず') + ' / 制御=' + (ctrl ? 'あり' : 'なし'));
+    }catch(e){
+      lines.push('Service Worker: 登録失敗 ' + (e && e.message ? e.message : e));
+    }
+  }else{
+    lines.push('Service Worker: このブラウザは未対応');
+  }
+
+  const captured = !!window.__nyancoInstallEvent;
+  lines.push('インストール可能フラグ: ' + (captured ? '受信済み(インストール可能)' : '未受信'));
+
+  if(diag) diag.textContent = lines.join('\n');
+
+  if(!installBtn || !installHelp) return;
+
+  if(standalone){
     installBtn.disabled = true;
     installBtn.textContent = 'インストール済みにゃ';
-    installHelp.textContent = 'このPCではアプリとして追加済みです。デスクトップやスタートメニューから開けるにゃ。';
-  }else{
-    installHelp.textContent = 'Chrome / Edge でこのページを開き、右上またはアドレスバー付近の「インストール」からPCに追加できるにゃ。';
+    installHelp.textContent = 'このPCではアプリとして追加済みにゃ。デスクトップやスタートメニューから開けるにゃ。';
+    if(manual) manual.hidden = true;
+    return;
   }
-  window.addEventListener('beforeinstallprompt', ev => {
-    ev.preventDefault();
-    deferredInstallPrompt = ev;
+
+  if(window.__nyancoInstallEvent){
     installBtn.disabled = false;
     installBtn.textContent = 'アプリとしてインストール';
     installHelp.textContent = '準備OKにゃ。このボタンからPCにインストールできるにゃ。';
-  });
-  window.addEventListener('appinstalled', () => {
-    deferredInstallPrompt = null;
-    installBtn.disabled = true;
-    installBtn.textContent = 'インストール完了';
-    installHelp.textContent = 'インストールありがとうにゃ。次からはデスクトップやアプリ一覧から開けるにゃ。';
-  });
+    if(manual) manual.hidden = true;
+  }else{
+    installBtn.disabled = false;
+    installBtn.textContent = 'インストール手順を表示';
+    installHelp.textContent = 'この画面からは自動で案内できないにゃ。ボタンを押すと、ブラウザのメニューからの入れ方を表示するにゃ。';
+    if(manual) manual.hidden = true;
+  }
+
   installBtn.addEventListener('click', async () => {
-    if(!deferredInstallPrompt){
-      installHelp.textContent = 'このブラウザでは、アドレスバー右側やメニュー内の「インストール」を使ってほしいにゃ。';
+    const deferred = window.__nyancoInstallEvent;
+    if(!deferred){
+      if(manual) manual.hidden = false;
+      installHelp.textContent = '上の手順でインストールしてほしいにゃ。下の動作チェックも合わせて確認するにゃ。';
       return;
     }
-    deferredInstallPrompt.prompt();
-    try{ await deferredInstallPrompt.userChoice; }catch(e){}
-    deferredInstallPrompt = null;
+    deferred.prompt();
+    try{ await deferred.userChoice; }catch(e){}
+    window.__nyancoInstallEvent = null;
     installBtn.disabled = true;
+    installBtn.textContent = 'インストール完了';
   });
 }
 
@@ -910,5 +999,6 @@ $('catStage').addEventListener('keydown',e=>{
 });
 renderAll('silent');
 </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
